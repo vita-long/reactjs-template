@@ -36,7 +36,7 @@ function getStyle(pre) {
 }
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.tsx',
   output: {
     path: isDevelopment ? undefined : path.resolve(__dirname, '../dist'),
     filename: isDevelopment ? 'static/js/[name].js' : 'static/js/[name].[contenthash:8].js',
@@ -89,6 +89,11 @@ module.exports = {
             isDevelopment && 'react-refresh/babel'
           ].filter(Boolean)
         }
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/
       }
     ]
   },
@@ -182,7 +187,7 @@ module.exports = {
     ].filter(Boolean)
   },
   resolve: {
-    extensions: ['.jsx', '.tsx', '.js', '.ts']
+    extensions: ['.tsx', '.jsx', '.js', '.ts']
   },
   devServer: {
     host: 'localhost',
