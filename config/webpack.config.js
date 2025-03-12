@@ -21,7 +21,12 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 function getStyle(pre) {
   return [
     isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-    'css-loader',
+    {
+      loader: 'css-loader',
+      options: {
+        importLoaders: 1 // ✅ 确保处理 @import 规则
+      }
+    },
     {
       // 处理css兼容性，需要package.json中的browserslist配合
       loader: 'postcss-loader',
@@ -187,7 +192,10 @@ module.exports = {
     ].filter(Boolean)
   },
   resolve: {
-    extensions: ['.tsx', '.jsx', '.js', '.ts']
+    extensions: ['.tsx', '.jsx', '.js', '.ts'],
+    alias: {
+      '@': path.resolve(__dirname, '../src')
+    }
   },
   devServer: {
     host: 'localhost',
