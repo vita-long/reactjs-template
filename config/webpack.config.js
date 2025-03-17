@@ -54,7 +54,30 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: getStyle()
+        oneOf: [
+          {
+            test: /\.module\.css$/,
+            use: [
+              'style-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  modules: {
+                    localIdentName: '[name]__[local]--[hash:base64:5]',
+                    // 设置为true时css modules会使用named exports的到处方式，也就是命名导出
+                    // 不能直接使用import styles from './switch.module.css';这种导出方式，会是undefined, 需要使用解构import { custom } from './switch.module.css'
+                    // 设置false时是默认导出，可以使用import styles from './switch.module.css'
+                    namedExport: false
+                  },
+                },
+              },
+              'postcss-loader',
+            ],
+          },
+          {
+            use: getStyle()
+          }
+        ]
       },
       {
         test: /\.less$/,
